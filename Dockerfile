@@ -3,7 +3,9 @@ WORKDIR /app/python-app
 
 COPY . .
 
-RUN pip3 install -r requirements.txt --proxy http://autoproxy.ktag.ch:8080
+RUN pip3 install -r requirements.txt --proxy http://autoproxy.ktag.ch:8080 \
+  && apt-get update \
+  && apt-get install -y unixodbc-dev
 
 EXPOSE 5050
 
