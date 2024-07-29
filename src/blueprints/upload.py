@@ -8,11 +8,11 @@ bp = Blueprint("upload", __name__)
 logger = get_module_logger(__name__)
 
 logger.info("Driver, Server, DB, User, Allowed Extensions:")
-logger.info(current_app.config['DRIVER'])
-logger.info(current_app.config['SERVER'])
-logger.info(current_app.config['DB'])
-logger.info(current_app.config['USER'])
-logger.info(current_app.config['ALLOWED_EXTENSIONS'])
+#logger.info(current_app.config['DRIVER'])
+#logger.info(current_app.config['SERVER'])
+#logger.info(current_app.config['DB'])
+#logger.info(current_app.config['USER'])
+#logger.info(current_app.config['ALLOWED_EXTENSIONS'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
