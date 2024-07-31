@@ -7,13 +7,6 @@ from werkzeug.utils import secure_filename
 bp = Blueprint("upload", __name__)
 logger = get_module_logger(__name__)
 
-logger.debug("Driver, Server, DB, User, Allowed Extensions:")
-logger.debug(current_app.config['DRIVER'])
-logger.debug(current_app.config['SERVER'])
-logger.debug(current_app.config['DB'])
-logger.debug(current_app.config['USER'])
-logger.debug(current_app.config['ALLOWED_EXTENSIONS'])
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
