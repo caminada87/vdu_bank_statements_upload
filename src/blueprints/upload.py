@@ -48,6 +48,22 @@ def upload():
         logger.debug('Request with a file exeeding 10MB has been denied.')
         response = {'filename': filename, 'error': 'File exeeds 10MB'}
         return make_response(jsonify(response), 413)
+
+    delivery_date = request.form['delivery_date'] if 'delivery_date' in request.form.keys() else None
+    try: 
+        delivery_date = datetime.datetime.strptime(delivery_date, '%d.%m.%Y')
+        str_delivery_date = delivery_date.strftime("%Y-%m-%dT%H:%M:%S")
+    except ValueError:
+        str_delivery_date = None
+    logger.info('str_delivery_date:')
+    logger.info(str_delivery_date)
+
+    source_path = request.form['source_path'] if 'source_path' in request.form.keys() else None
+    source_path_description = request.form['source_path_description'] if 'source_path_description' in request.form.keys() else None
+    esta = request.form['esta'] if 'esta' in request.form.keys() else None
+    adressnummer = request.form['adressnummer'] if 'adressnummer' in request.form.keys() else None
+    folgenummer = request.form['folgenummer'] if 'folgenummer' in request.form.keys() else None
+    steuerjahr = request.form['steuerjahr'] if 'steuerjahr' in request.form.keys() else None
     
      # upload the file
     logger.debug('1')
@@ -62,8 +78,8 @@ def upload():
             buffer = BytesIO()
             file.save(buffer)
             bindata  = buffer.getvalue()
-            base_query = "INSERT INTO [KSTADiverses_Test].[dbo].[vdu_bank_statements] (CreationDateTime, FileBinary, ProcessingStatus) VALUES (?,?,?)"
-            params = (str(datetime.datetime.now()), pyodbc.Binary(bindata), 1)
+            base_query = "INSERT INTO [KSTADiverses_Test].[dbo].[vdu_bank_statements] (CreationDateTime, DeliveryDate, SourcePath, SourceDescription, ESTA, Adressnummer, Folgenummer, Steuerjahr, FileBinary, ProcessingStatus) VALUES (?,?,?,?,?,?,?,?,?,?)"
+            params = (str(datetime.datetime.now()), str_delivery_date, source_path, source_path_description, esta, adressnummer, folgenummer, steuerjahr, pyodbc.Binary(bindata), 1)
             #query = base_query.format(str(datetime.datetime.now()), mssql_varbinary, 1)
             cursor = connKstaDiversesTest.cursor()
             queryResult = cursor.execute(base_query, params)
